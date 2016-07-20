@@ -7,7 +7,7 @@
   var MimeType, exports, path;
   path = void 0;
   MimeType = void 0;
-  if (require) {
+  if (typeof require !== "undefined" && require !== null) {
     path = require('path');
   } else {
     path = {
@@ -28,14 +28,14 @@
       var charset, ext;
       ext = void 0;
       charset = this.charset;
-      if (include_charset) {
+      if (include_charset == null) {
         include_charset = false;
       }
       if (typeof include_charset === 'string') {
         charset = include_charset;
         include_charset = true;
       }
-      if (path.extname !== void 0) {
+      if (path.extname != null) {
         ext = path.extname(fname).toLowerCase();
       } else if (fname.lastIndexOf('.') > 0) {
         ext = fname.substr(fname.lastIndexOf('.')).toLowerCase();
@@ -45,13 +45,13 @@
       if (ext === '') {
         ext = fname;
       }
-      if (this.catalog[ext] !== void 0) {
+      if (this.catalog[ext] != null) {
         if (include_charset === true && this.catalog[ext].indexOf('text/') === 0 && this.catalog[ext].indexOf('charset') < 0) {
           return this.catalog[ext] + '; charset=' + charset;
         } else {
           return this.catalog[ext];
         }
-      } else if (default_mime_type !== void 0) {
+      } else if (default_mime_type != null) {
         if (include_charset === true && default_mime_type.indexOf('text/') === 0) {
           return default_mime_type + '; charset=' + charset;
         }
@@ -723,7 +723,7 @@
   MimeType.set('.mobi', 'application/x-mobipocket-ebook');
   MimeType.set('README,LICENSE,COPYING,TODO,ABOUT,AUTHORS,CONTRIBUTORS', 'text/plain');
   MimeType.set('manifest,.manifest,.mf,.appcache', 'text/cache-manifest');
-  if (exports !== void 0) {
+  if (exports != null) {
     exports.charset = MimeType.charset;
     exports.catalog = MimeType.catalog;
     exports.lookup = MimeType.lookup;
@@ -731,10 +731,10 @@
     exports.del = MimeType.del;
     exports.forEach = MimeType.forEach;
   }
-  if (self.MimeType === void 0) {
+  if (self.MimeType == null) {
     self.MimeType = MimeType;
   }
-  if (self.mimeType === void 0) {
+  if (self.mimeType == null) {
     self.mimeType = MimeType;
   }
   return self;

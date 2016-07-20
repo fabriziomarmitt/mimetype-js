@@ -18,7 +18,7 @@
   MimeType = undefined
   # If we're NodeJS I can use the path module.
   # If I'm MongoDB shell, not available.
-  if require
+  if require?
     path = require('path')
   else
     path = extname: (filename) ->
@@ -33,12 +33,12 @@
     lookup: (fname, include_charset, default_mime_type) ->
       ext = undefined
       charset = @charset
-      if include_charset 
+      if !include_charset?
         include_charset = false
       if typeof include_charset == 'string'
         charset = include_charset
         include_charset = true
-      if path.extname != undefined
+      if path.extname?
         ext = path.extname(fname).toLowerCase()
       else if fname.lastIndexOf('.') > 0
         ext = fname.substr(fname.lastIndexOf('.')).toLowerCase()
@@ -48,12 +48,12 @@
       # e..g README, manifest, LICENSE, TODO
       if ext == ''
         ext = fname
-      if @catalog[ext] != undefined
+      if @catalog[ext]?
         if include_charset == true and @catalog[ext].indexOf('text/') == 0 and @catalog[ext].indexOf('charset') < 0
           return @catalog[ext] + '; charset=' + charset
         else
           return @catalog[ext]
-      else if default_mime_type != undefined
+      else if default_mime_type?
         if include_charset == true and default_mime_type.indexOf('text/') == 0
           return default_mime_type + '; charset=' + charset
         return default_mime_type
@@ -721,7 +721,7 @@
   # Here's some common special cases without filename extensions
   MimeType.set 'README,LICENSE,COPYING,TODO,ABOUT,AUTHORS,CONTRIBUTORS', 'text/plain'
   MimeType.set 'manifest,.manifest,.mf,.appcache', 'text/cache-manifest'
-  if exports != undefined
+  if exports?
     exports.charset = MimeType.charset
     exports.catalog = MimeType.catalog
     exports.lookup = MimeType.lookup
@@ -729,10 +729,10 @@
     exports.del = MimeType.del
     exports.forEach = MimeType.forEach
   # Note: Chrome now defines window.MimeType, only define for legacy usage.
-  if self.MimeType == undefined
+  if !self.MimeType?
     self.MimeType = MimeType
   # Note: Per Hypercuded switch to camel case to avoid Chrome issues.
-  if self.mimeType == undefined
+  if !self.mimeType?
     self.mimeType = MimeType
   self
 ) this
